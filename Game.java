@@ -34,23 +34,25 @@ public class Game
      */
     private void createRooms()
     {
-        Room outside, theater, pub, lab, office;
+        Room central, ruinas, trampa, salida, pozo, mazmorra;
       
         // create the rooms
-        outside = new Room("outside the main entrance of the university");
-        theater = new Room("in a lecture theater");
-        pub = new Room("in the campus pub");
-        lab = new Room("in a computing lab");
-        office = new Room("in the computing admin office");
+        central = new Room("central");
+        ruinas = new Room("ruinas");
+        trampa = new Room("trampa");
+        salida = new Room("salida");
+        pozo = new Room("pozo");
+        mazmorra = new Room("mazmorra");
         
-        // initialise room exits
-        outside.setExits(null, theater, lab, pub);
-        theater.setExits(null, null, null, outside);
-        pub.setExits(null, outside, null, null);
-        lab.setExits(outside, office, null, null);
-        office.setExits(null, null, null, lab);
-
-        currentRoom = outside;  // start game outside
+        // initialise room exits (N,E,S,W)
+        central.setExits(mazmorra, ruinas, salida, trampa);
+        ruinas.setExits(pozo, null, null, central);
+        trampa.setExits(null, null, null, null);
+        salida.setExits(central, null, null, null);
+        pozo.setExits(null, null, ruinas, mazmorra);
+        mazmorra.setExits(null, pozo, central, null);
+        
+        currentRoom = mazmorra;  // start game outside
     }
 
     /**
@@ -81,6 +83,12 @@ public class Game
         System.out.println("World of Zuul is a new, incredibly boring adventure game.");
         System.out.println("Type 'help' if you need help.");
         System.out.println();
+        System.out.println("Abres los ojos y no reconoces la sala que tienes alrededor... Estas en una celda, con barrotes viejos y oxidados ");
+        System.out.println("al mirar al techo ves un agujero por el que salir, sin pensarlo saltas fuera de la celda hasta una sala con paredes ");
+        System.out.println("altas, muy altas, comidas por el moho y sin ningun tipo de techo... Hacia arriba solo se veia el cielo oscuro de la noche. ");
+        System.out.println("Miras a tu alrededor esta vez fijandote mas en los detalles, solo hay un par de chabolas vacias y unas 10 celdas como ");
+        System.out.println("de la que acabas de salir, ¿unas mazomorras o algo asi?");
+        System.out.println("Miras hacia una de las paredes, ves una salida y lo unico que piensas es que ojala esto no sea igual que un laberinto...");
         System.out.println("You are " + currentRoom.getDescription());
         System.out.print("Exits: ");
         if(currentRoom.northExit != null) {
