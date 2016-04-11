@@ -19,7 +19,7 @@ public class Game
 {
     private Parser parser;
     private Room currentRoom;
-        
+
     /**
      * Create the game and initialise its internal map.
      */
@@ -35,7 +35,7 @@ public class Game
     private void createRooms()
     {
         Room central, ruinas, trampa, salida, pozo, mazmorra;
-      
+
         // create the rooms
         central = new Room("Llegas a una sala con salida en todas las direcciones, en ella ves cuatro imponentes \ncolumnas que hace años deberian haber sido blancas.");
         ruinas = new Room("Al entrar te sorprendes al verte rodeado de ruinas de antiguas construcciones.");
@@ -43,15 +43,26 @@ public class Game
         salida = new Room("Al pasar por la entrada de la sala ves una luz enfrente de ti. \n¡La salida!");
         pozo = new Room("En medio de esta nueva sala te encuentras con un gran pozo y no puedes evitar preguntarte si tendra algo de agua en el fondo.");
         mazmorra = new Room("Miras alrededor y te das cuenta de que has vuelto a las mazmorras donde empezaste... Lo que pensabas, un laberinto...");
-        
-        // initialise room exits (N,E,S,W)
-        central.setExits(mazmorra, ruinas, salida, trampa, null, null);
-        ruinas.setExits(pozo, null, null, central, null, mazmorra);
-        trampa.setExits(null, null, null, null, null, null);
-        salida.setExits(central, null, null, null, null, null);
-        pozo.setExits(null, null, ruinas, mazmorra, null, null);
-        mazmorra.setExits(null, pozo, central, null, ruinas, null);
-        
+
+        // initialise room exits (N,E,S,W,SE,NO)
+        central.setExit("north", mazmorra);
+        central.setExit("east", ruinas);
+        central.setExit("south", salida);
+        central.setExit("west", trampa);
+
+        ruinas.setExit("north", pozo);
+        ruinas.setExit("west", central);
+        ruinas.setExit("northWest", mazmorra);
+
+        salida.setExit("north", central);
+
+        pozo.setExit("south", ruinas);
+        pozo.setExit("west", mazmorra);
+
+        mazmorra.setExit("east", pozo);
+        mazmorra.setExit("south", salida);
+        mazmorra.setExit("southEast", ruinas);
+
         currentRoom = mazmorra;  // start game outside
     }
 
@@ -160,10 +171,8 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-       
-        
-        Room nextRoom = currentRoom.getExit(direction);
 
+        Room nextRoom = currentRoom.getExit(direction);
         if (nextRoom == null) {
             System.out.println("There is no door!");
         }
@@ -189,7 +198,7 @@ public class Game
             return true;  // signal that we want to quit
         }
     }
-    
+
     /**
      * Metodo para saber que salidas tiene una sala.
      */
