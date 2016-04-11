@@ -45,12 +45,12 @@ public class Game
         mazmorra = new Room("Miras alrededor y te das cuenta de que has vuelto a las mazmorras donde empezaste... Lo que pensabas, un laberinto...");
         
         // initialise room exits (N,E,S,W)
-        central.setExits(mazmorra, ruinas, salida, trampa, null);
-        ruinas.setExits(pozo, null, null, central, null);
-        trampa.setExits(null, null, null, null, null);
-        salida.setExits(central, null, null, null, null);
-        pozo.setExits(null, null, ruinas, mazmorra, null);
-        mazmorra.setExits(null, pozo, central, null, ruinas);
+        central.setExits(mazmorra, ruinas, salida, trampa, null, null);
+        ruinas.setExits(pozo, null, null, central, null, mazmorra);
+        trampa.setExits(null, null, null, null, null, null);
+        salida.setExits(central, null, null, null, null, null);
+        pozo.setExits(null, null, ruinas, mazmorra, null, null);
+        mazmorra.setExits(null, pozo, central, null, ruinas, null);
         
         currentRoom = mazmorra;  // start game outside
     }
