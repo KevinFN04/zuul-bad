@@ -45,12 +45,12 @@ public class Game
         mazmorra = new Room("Miras alrededor y te das cuenta de que has vuelto a las mazmorras donde empezaste... Lo que pensabas, un laberinto...");
         
         // initialise room exits (N,E,S,W)
-        central.setExits(mazmorra, ruinas, salida, trampa);
-        ruinas.setExits(pozo, null, null, central);
-        trampa.setExits(null, null, null, null);
-        salida.setExits(central, null, null, null);
-        pozo.setExits(null, null, ruinas, mazmorra);
-        mazmorra.setExits(null, pozo, central, null);
+        central.setExits(mazmorra, ruinas, salida, trampa, null);
+        ruinas.setExits(pozo, null, null, central, null);
+        trampa.setExits(null, null, null, null, null);
+        salida.setExits(central, null, null, null, null);
+        pozo.setExits(null, null, ruinas, mazmorra, null);
+        mazmorra.setExits(null, pozo, central, null, ruinas);
         
         currentRoom = mazmorra;  // start game outside
     }
@@ -174,6 +174,9 @@ public class Game
         if(direction.equals("west")) {
             nextRoom = currentRoom.westExit;
         }
+        if(direction.equals("southEast")) {
+            nextRoom = currentRoom.southEastExit;
+        }
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
@@ -218,6 +221,9 @@ public class Game
         }
         if(currentRoom.westExit != null) {
             System.out.print("west ");
+        }
+        if(currentRoom.southEastExit != null) {
+            System.out.print("southEast ");
         }
     }
 }
