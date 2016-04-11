@@ -98,7 +98,6 @@ public class Game
         System.out.println("Miras a tu alrededor esta vez fijandote mas en los detalles, solo hay un par de chabolas vacias y unas 10 celdas como ");
         System.out.println("de la que acabas de salir, ¿unas mazomorras o algo asi?");
         System.out.println("Miras hacia una de las paredes, ves una salida y lo unico que piensas es que ojala esto no sea igual que un laberinto...");
-        System.out.print("Exits: ");
         printLocationInfo();
         System.out.println();
     }
@@ -161,22 +160,9 @@ public class Game
         String direction = command.getSecondWord();
 
         // Try to leave current room.
-        Room nextRoom = null;
-        if(direction.equals("north")) {
-            nextRoom = currentRoom.northExit;
-        }
-        if(direction.equals("east")) {
-            nextRoom = currentRoom.eastExit;
-        }
-        if(direction.equals("south")) {
-            nextRoom = currentRoom.southExit;
-        }
-        if(direction.equals("west")) {
-            nextRoom = currentRoom.westExit;
-        }
-        if(direction.equals("southEast")) {
-            nextRoom = currentRoom.southEastExit;
-        }
+       
+        
+        Room nextRoom = currentRoom.getExit(direction);
 
         if (nextRoom == null) {
             System.out.println("There is no door!");
@@ -184,7 +170,6 @@ public class Game
         else {
             currentRoom = nextRoom;
             System.out.println(currentRoom.getDescription());
-            System.out.print("Exits: ");
             printLocationInfo();
             System.out.println();
         }
@@ -210,20 +195,6 @@ public class Game
      * Metodo para saber que salidas tiene una sala.
      */
     private void printLocationInfo(){
-        if(currentRoom.northExit != null) {
-            System.out.print("north ");
-        }
-        if(currentRoom.eastExit != null) {
-            System.out.print("east ");
-        }
-        if(currentRoom.southExit != null) {
-            System.out.print("south ");
-        }
-        if(currentRoom.westExit != null) {
-            System.out.print("west ");
-        }
-        if(currentRoom.southEastExit != null) {
-            System.out.print("southEast ");
-        }
+        System.out.println(currentRoom.getExitString());
     }
 }
