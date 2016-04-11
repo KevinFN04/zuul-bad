@@ -37,12 +37,12 @@ public class Game
         Room central, ruinas, trampa, salida, pozo, mazmorra;
       
         // create the rooms
-        central = new Room("central");
-        ruinas = new Room("ruinas");
-        trampa = new Room("trampa");
-        salida = new Room("salida");
-        pozo = new Room("pozo");
-        mazmorra = new Room("mazmorra");
+        central = new Room("Llegas a una sala con salida en todas las direcciones, en ella ves cuatro imponentes \ncolumnas que hace años deberian haber sido blancas.");
+        ruinas = new Room("Al entrar te sorprendes al verte rodeado de ruinas de antiguas construcciones.");
+        trampa = new Room("Al entrar a la sala oyes un ruido a tu espalda y te sorprendes al ver que por donde acabas de entrar ya no hay salida. Estas encerrado, 'GAME OVER'");
+        salida = new Room("Al pasar por la entrada de la sala ves una luz enfrente de ti. \n¡La salida!");
+        pozo = new Room("En medio de esta nueva sala te encuentras con un gran pozo y no puedes evitar preguntarte si tendra algo de agua en el fondo.");
+        mazmorra = new Room("Miras alrededor y te das cuenta de que has vuelto a las mazmorras donde empezaste... Lo que pensabas, un laberinto...");
         
         // initialise room exits (N,E,S,W)
         central.setExits(mazmorra, ruinas, salida, trampa);
@@ -64,13 +64,22 @@ public class Game
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
-                
+        String victory = "Al pasar por la entrada de la sala ves una luz enfrente de ti. \n¡La salida!";
+        String derrota = "Al entrar a la sala oyes un ruido a tu espalda y te sorprendes al ver que por donde acabas de entrar ya no hay salida. Estas encerrado, 'GAME OVER'";
+        boolean salida = false;
+        boolean trampa = false;
         boolean finished = false;
-        while (! finished) {
+        while (!finished && !salida && !trampa) {
             Command command = parser.getCommand();
             finished = processCommand(command);
+            if (currentRoom.getDescription().equals(victory)){
+                salida = true;
+            }
+            if (currentRoom.getDescription().equals(derrota)){
+                trampa = true;
+            }
         }
-        System.out.println("Thank you for playing.  Good bye.");
+        System.out.println("Juego terminado, gracias por jugar :')");
     }
 
     /**
@@ -89,20 +98,8 @@ public class Game
         System.out.println("Miras a tu alrededor esta vez fijandote mas en los detalles, solo hay un par de chabolas vacias y unas 10 celdas como ");
         System.out.println("de la que acabas de salir, ¿unas mazomorras o algo asi?");
         System.out.println("Miras hacia una de las paredes, ves una salida y lo unico que piensas es que ojala esto no sea igual que un laberinto...");
-        System.out.println("You are " + currentRoom.getDescription());
         System.out.print("Exits: ");
-        if(currentRoom.northExit != null) {
-            System.out.print("north ");
-        }
-        if(currentRoom.eastExit != null) {
-            System.out.print("east ");
-        }
-        if(currentRoom.southExit != null) {
-            System.out.print("south ");
-        }
-        if(currentRoom.westExit != null) {
-            System.out.print("west ");
-        }
+        printLocationInfo();
         System.out.println();
     }
 
@@ -143,8 +140,7 @@ public class Game
      */
     private void printHelp() 
     {
-        System.out.println("You are lost. You are alone. You wander");
-        System.out.println("around at the university.");
+        System.out.println("You are lost. You are alone.");
         System.out.println();
         System.out.println("Your command words are:");
         System.out.println("   go quit help");
@@ -184,20 +180,9 @@ public class Game
         }
         else {
             currentRoom = nextRoom;
-            System.out.println("You are " + currentRoom.getDescription());
+            System.out.println(currentRoom.getDescription());
             System.out.print("Exits: ");
-            if(currentRoom.northExit != null) {
-                System.out.print("north ");
-            }
-            if(currentRoom.eastExit != null) {
-                System.out.print("east ");
-            }
-            if(currentRoom.southExit != null) {
-                System.out.print("south ");
-            }
-            if(currentRoom.westExit != null) {
-                System.out.print("west ");
-            }
+            printLocationInfo();
             System.out.println();
         }
     }
@@ -215,6 +200,24 @@ public class Game
         }
         else {
             return true;  // signal that we want to quit
+        }
+    }
+    
+    /**
+     * Metodo para saber que salidas tiene una sala.
+     */
+    private void printLocationInfo(){
+        if(currentRoom.northExit != null) {
+            System.out.print("north ");
+        }
+        if(currentRoom.eastExit != null) {
+            System.out.print("east ");
+        }
+        if(currentRoom.southExit != null) {
+            System.out.print("south ");
+        }
+        if(currentRoom.westExit != null) {
+            System.out.print("west ");
         }
     }
 }
