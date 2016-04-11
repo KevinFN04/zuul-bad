@@ -169,7 +169,6 @@ public class Game
         }
         else {
             currentRoom = nextRoom;
-            System.out.println(currentRoom.getDescription());
             printLocationInfo();
             System.out.println();
         }
@@ -195,6 +194,7 @@ public class Game
      * Metodo para saber que salidas tiene una sala.
      */
     private void printLocationInfo(){
+        System.out.println(currentRoom.getDescription());
         System.out.println(currentRoom.getExitString());
     }
 }
