@@ -155,7 +155,10 @@ public class Game
     {
         System.out.println("You are lost. You are alone.");
         System.out.println();
-        parser.getCommands().showAll();
+        //Opcion1:
+        //parser.getCommands().showAll();
+        //Opcion2:
+        parser.printCommands();
     }
 
     /** 

@@ -70,4 +70,12 @@ public class Parser
     {
         return commands;
     }
+    
+    /**
+     * @return The next command from the user.
+     */
+    public void printCommands() 
+    {
+        commands.showAll();
+    }
 }
