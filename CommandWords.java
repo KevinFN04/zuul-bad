@@ -13,8 +13,8 @@ public class CommandWords
 {
     // a constant array that holds all valid command words
     private static final String[] validCommands = {
-        "go", "quit", "help", "look"
-    };
+            "go", "quit", "help", "look"
+        };
 
     /**
      * Constructor - initialise the command words.
@@ -38,8 +38,15 @@ public class CommandWords
         // if we get here, the string was not found in the commands
         return false;
     }
-    
+
     /**
-     * Devuelve el objeto commands
+     * Print all valid commands to System.out
      */
+    public void showAll(){
+        String comandos = "Your command words are:\n";
+        for(String comando : validCommands){
+            comandos += comando + " ";
+        }
+        System.out.println(comandos);
+    }
 }
