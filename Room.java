@@ -40,20 +40,7 @@ public class Room
     }
 
     public Room getExit(String direccion){
-        Room salida = null;
-        if(direccion.equals("north"))
-            salida = exits.get("north");
-        if(direccion.equals("east"))
-            salida = exits.get("east");
-        if(direccion.equals("south"))
-            salida = exits.get("south");
-        if(direccion.equals("west"))
-            salida = exits.get("west");
-        if(direccion.equals("southEast"))
-            salida = exits.get("southEast");
-        if(direccion.equals("northWest"))
-            salida = exits.get("northWest");
-        return salida;
+        return exits.get(direccion);
     }
 
     /**
@@ -64,23 +51,8 @@ public class Room
      */
     public String getExitString(){
         String salida = "Exits: ";
-        if(exits.get("north") != null) {
-            salida += "north ";
-        }
-        if(exits.get("east") != null) {
-            salida += "east ";
-        }
-        if(exits.get("south") != null) {
-            salida += "south ";
-        }
-        if(exits.get("west") != null) {
-            salida += "west ";
-        }
-        if(exits.get("southEast") != null) {
-            salida += "southEast ";
-        }
-        if(exits.get("northWest") != null) {
-            salida += "northWest ";
+        for(String claveActual : exits.keySet()){
+            salida += claveActual + " ";
         }
         return salida;
     }
@@ -93,7 +65,7 @@ public class Room
     public void setExit(String direction, Room neighbor){
         exits.put(direction, neighbor);
     }
-    
+
     /**
      * Return a long description of this room, of the form:
      *     You are in the 'name of room'
