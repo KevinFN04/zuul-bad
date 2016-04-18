@@ -37,13 +37,15 @@ public class Game
         Room central, ruinas, trampa, salida, pozo, mazmorra;
 
         // create the rooms
-        central = new Room("Llegas a una sala con salida en todas las direcciones, en ella ves cuatro imponentes \ncolumnas que hace años deberian haber sido blancas.", "Llave", 0.10F);
-        ruinas = new Room("Al entrar te sorprendes al verte rodeado de ruinas de antiguas construcciones.", "Pergamino", 0.5F);
-        trampa = new Room("Al entrar a la sala oyes un ruido a tu espalda y te sorprendes al ver que por donde acabas de entrar ya no hay salida. Estas encerrado, 'GAME OVER'", null, 0);
-        salida = new Room("Al pasar por la entrada de la sala ves una luz enfrente de ti. \n¡La salida!", "Campana", 10F);
-        pozo = new Room("En medio de esta nueva sala te encuentras con un gran pozo y no puedes evitar preguntarte si tendra algo de agua en el fondo.", "Manzana", 0.450F);
-        mazmorra = new Room("Miras alrededor y te das cuenta de que has vuelto a las mazmorras donde empezaste... Lo que pensabas, un laberinto...", "Palo", 0.5F);
-
+        central = new Room("Llegas a una sala con salida en todas las direcciones, en ella ves cuatro imponentes \ncolumnas que hace años deberian haber sido blancas.");
+        ruinas = new Room("Al entrar te sorprendes al verte rodeado de ruinas de antiguas construcciones.");
+        trampa = new Room("Al entrar a la sala oyes un ruido a tu espalda y te sorprendes al ver que por donde acabas de entrar ya no hay salida. Estas encerrado, 'GAME OVER'");
+        salida = new Room("Al pasar por la entrada de la sala ves una luz enfrente de ti. \n¡La salida!");
+        pozo = new Room("En medio de esta nueva sala te encuentras con un gran pozo y no puedes evitar preguntarte si tendra algo de agua en el fondo.");
+        mazmorra = new Room("Miras alrededor y te das cuenta de que has vuelto a las mazmorras donde empezaste... Lo que pensabas, un laberinto...");
+        //Items
+        mazmorra.addItem("manzana", 0.12F);
+        mazmorra.addItem("Llave", 0.09F);
         // initialise room exits (N,E,S,W,SE,NO)
         central.setExit("north", mazmorra);
         central.setExit("east", ruinas);
@@ -60,7 +62,7 @@ public class Game
         pozo.setExit("west", mazmorra);
 
         mazmorra.setExit("east", pozo);
-        mazmorra.setExit("south", salida);
+        mazmorra.setExit("south", central);
         mazmorra.setExit("southEast", ruinas);
 
         currentRoom = mazmorra;  // start game outside
