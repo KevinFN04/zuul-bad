@@ -19,17 +19,18 @@ import java.util.*;
 public class Game 
 {
     private Parser parser;
+    private Player player;
     private Room currentRoom;
-    private Stack<Room> salas;
+    //private Stack<Room> salas;
 
     /**
      * Create the game and initialise its internal map.
      */
     public Game() 
     {
-        salas = new Stack<Room>();
         createRooms();
         parser = new Parser();
+        player = new Player(currentRoom);
     }
 
     /**
@@ -177,26 +178,7 @@ public class Game
      */
     private void goRoom(Command command) 
     {
-        if(!command.hasSecondWord()) {
-            // if there is no second word, we don't know where to go...
-            System.out.println("Go where?");
-            return;
-        }
-
-        String direction = command.getSecondWord();
-        // Try to leave current room.
-        if (currentRoom != null){
-            salas.push(currentRoom);
-        }
-        Room nextRoom = currentRoom.getExit(direction);
-        if (nextRoom == null) {
-            System.out.println("There is no door!");
-        }
-        else {
-            currentRoom = nextRoom;
-            printLocationInfo();
-            System.out.println();
-        }
+        player.goRoom(command);
     }
 
     /** 
@@ -226,17 +208,6 @@ public class Game
      * Metodo para saber que salidas tiene una sala.
      */
     private void goBack(){
-        Room previousRoom = null;
-        if (!salas.empty()){
-           previousRoom = salas.pop();
-        }
-        if (previousRoom == null) {
-            System.out.println("No hay vuelta atras!");
-        }
-        else {
-            currentRoom = previousRoom;
-            printLocationInfo();
-            System.out.println();
-        }
+        player.goBack();
     }
 }
