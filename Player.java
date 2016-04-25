@@ -13,9 +13,9 @@ public class Player
     //Salas por las que ha pasado dicho jugador.
     private Stack<Room> salas;
     //Peso Maximo que puede llevar el jugador.
-    public static final float PESO_MAXIMO = 10F;
+    public static final int PESO_MAXIMO = 10;
     //Peso que lleva el usuario actualmente
-    private float pesoObj;
+    private int pesoObj;
     //Inventario del jugador
     private ArrayList<Item> inventario;
     /**
@@ -90,7 +90,8 @@ public class Player
         if (currentRoom.getNumberItem() == 0) {
             System.out.println("No hay objetos en la sala!!");
         }
-        if (currentRoom.getItem(objeto).puedeRecogerse()){
+        
+        if (currentRoom.getItem(objeto) != null && currentRoom.getItem(objeto).puedeRecogerse()){
             if (pesoObj + currentRoom.getItem(objeto).getPeso() <= PESO_MAXIMO){
                 inventario.add(currentRoom.getItem(objeto));
                 pesoObj += currentRoom.getItem(objeto).getPeso();
@@ -127,7 +128,7 @@ public class Player
         }
         
         if (encontrado){
-            pesoObj -= inventario.get(index).getPeso();
+            pesoObj = pesoObj - inventario.get(index).getPeso();
             currentRoom.addItem(inventario.get(index).getDescription(), inventario.get(index).getPeso(), true);
             inventario.remove(index);           
         }
@@ -135,6 +136,15 @@ public class Player
             System.out.println("No puedes dejar un objeto que no tienes!");
         }
     }
-
+    
+    /**
+     * Metodo para mostrar los objetos y el peso actual.
+     */
+    public void showObjects(Command command){
+       for(Item objetoInv : inventario){
+           System.out.println(objetoInv.getDescription());
+        }
+        System.out.println("Peso actual: " + pesoObj);
+    }
 }
 

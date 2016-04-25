@@ -8,13 +8,13 @@
 public class Item
 {
     private String descripcionObj;
-    private float peso;
+    private int peso;
     private boolean puedeCogerse;
     
     /**
      * Constructor for objects of class Item
      */
-    public Item(String descripcion, float peso, boolean puedeCogerse)
+    public Item(String descripcion, int peso, boolean puedeCogerse)
     {
         this.puedeCogerse = puedeCogerse;
         this.peso = peso;
@@ -26,7 +26,7 @@ public class Item
      * 
      * @return     the weight of the item 
      */
-    public float getPeso()
+    public int getPeso()
     {
         return peso;
     }

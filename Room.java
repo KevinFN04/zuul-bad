@@ -93,11 +93,12 @@ public class Room
         return longDescription;
     }
 
-    public void addItem(String descripcionObj, float pesoObj, boolean puedeCogerse){
+    public void addItem(String descripcionObj, int pesoObj, boolean puedeCogerse){
         items.put(descripcionObj, new Item(descripcionObj, pesoObj, puedeCogerse));
     }
 
     public Item getItem(String nombreObj){
+        
         return items.get(nombreObj);
     }
     
