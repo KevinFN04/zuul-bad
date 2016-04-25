@@ -48,8 +48,10 @@ public class Game
         pozo = new Room("En medio de esta nueva sala te encuentras con un gran pozo y no puedes evitar preguntarte si tendra algo de agua en el fondo.");
         mazmorra = new Room("Miras alrededor y te das cuenta de que has vuelto a las mazmorras donde empezaste... Lo que pensabas, un laberinto...");
         //Items
-        mazmorra.addItem("manzana", 0.12F);
-        mazmorra.addItem("Llave", 0.09F);
+        mazmorra.addItem("Manzana", 1, true);
+        mazmorra.addItem("Llave", 1, true);
+        mazmorra.addItem("Martillo", 9, true);
+        mazmorra.addItem("Piedra", 9, false);
         // initialise room exits (N,E,S,W,SE,NO)
         central.setExit("north", mazmorra);
         central.setExit("east", ruinas);
@@ -152,6 +154,15 @@ public class Game
         else if (commandWord.equals("back")) {
             goBack();
         }
+        else if (commandWord.equals("take")) {
+            player.takeObject(command);
+        }
+        else if (commandWord.equals("drop")) {
+            player.dropObject(command);
+        }
+        else if (commandWord.equals("items")) {
+            player.showObjects(command);
+        }
         return wantToQuit;
     }
 
@@ -210,4 +221,5 @@ public class Game
     private void goBack(){
         player.goBack();
     }
+    
 }
