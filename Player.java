@@ -12,12 +12,19 @@ public class Player
     private Room currentRoom;
     //Salas por las que ha pasado dicho jugador.
     private Stack<Room> salas;
-
+    //Peso Maximo que puede llevar el jugador.
+    public static final float PESO_MAXIMO = 10F;
+    //Peso que lleva el usuario actualmente
+    private float pesoObj;
+    //Inventario del jugador
+    private ArrayList<Item> inventario;
     /**
      * Constructor for objects of class Player
      */
     public Player(Room firstRoom)
     {
+        pesoObj = 0;
+        inventario = new ArrayList<Item>();
         currentRoom = firstRoom;
         salas = new Stack<Room>();
     }
@@ -67,5 +74,30 @@ public class Player
             System.out.println();
         }
     }
+    
+    /**
+     * Metodo para recoger un itme de la sala.
+     */
+    public void takeObject(Command command){
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            System.out.println("Coger que?");
+            return;
+        }
 
+        String objeto = command.getSecondWord();
+        //Intenta coger un objeto.
+        if (currentRoom.getNumberItem() == 0) {
+            System.out.println("No hay objetos en la sala!!");
+        }
+        inventario.add(currentRoom.getItem(objeto));
+        
+        if (pesoObj + currentRoom.getItem(objeto).getPeso() <= PESO_MAXIMO){
+            pesoObj += currentRoom.getItem(objeto).getPeso();
+            currentRoom.removeItem(objeto);
+        }
+        else{
+            System.out.println("No puedes coger el objeto, demasiado peso!");
+        }
+    }
 }
