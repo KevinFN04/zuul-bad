@@ -104,6 +104,37 @@ public class Player
             System.out.println("No se puede coger ese objeto!!");
         }
     }
-    
-    
+
+    /**
+     * Metodo para tirar un item de la sala.
+     */
+    public void dropObject(Command command){
+        if(!command.hasSecondWord()) {
+            // if there is no second word, we don't know where to go...
+            System.out.println("Tirar que?");
+            return;
+        }
+
+        String objeto = command.getSecondWord();
+        
+        int index = 0;
+        boolean encontrado = false;
+        for(int i = 0; i < inventario.size() && !encontrado; i++) {
+            if (inventario.get(i).getDescription().equals(objeto)){
+                index = i;
+                encontrado = true;
+            }
+        }
+        
+        if (encontrado){
+            pesoObj -= inventario.get(index).getPeso();
+            currentRoom.addItem(inventario.get(index).getDescription(), inventario.get(index).getPeso(), true);
+            inventario.remove(index);           
+        }
+        else{
+            System.out.println("No puedes dejar un objeto que no tienes!");
+        }
+    }
+
 }
+
