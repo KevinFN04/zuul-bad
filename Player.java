@@ -28,7 +28,7 @@ public class Player
         currentRoom = firstRoom;
         salas = new Stack<Room>();
     }
-    
+
     /** 
      * Try to go in one direction. If there is an exit, enter
      * the new room, otherwise print an error message.
@@ -43,7 +43,7 @@ public class Player
 
         String direction = command.getSecondWord();
         // Try to leave current room.
-        if (currentRoom != null){
+        if (currentRoom.getExit(direction) != null){
             salas.push(currentRoom);
         }
         Room nextRoom = currentRoom.getExit(direction);
@@ -56,14 +56,14 @@ public class Player
             System.out.println();
         }
     }
-    
-     /**
+
+    /**
      * Metodo para ir hacia atras las veces que quieras hasta la primera sala.
      */
     public void goBack(){
         Room previousRoom = null;
         if (!salas.empty()){
-           previousRoom = salas.pop();           
+            previousRoom = salas.pop();           
         }
         if (previousRoom == null) {
             System.out.println("No hay vuelta atras!");
@@ -74,7 +74,7 @@ public class Player
             System.out.println();
         }
     }
-    
+
     /**
      * Metodo para recoger un itme de la sala.
      */
@@ -91,13 +91,17 @@ public class Player
             System.out.println("No hay objetos en la sala!!");
         }
         inventario.add(currentRoom.getItem(objeto));
-        
-        if (pesoObj + currentRoom.getItem(objeto).getPeso() <= PESO_MAXIMO){
-            pesoObj += currentRoom.getItem(objeto).getPeso();
-            currentRoom.removeItem(objeto);
+        if (currentRoom.getItem(objeto).puedeRecogerse()){
+            if (pesoObj + currentRoom.getItem(objeto).getPeso() <= PESO_MAXIMO){
+                pesoObj += currentRoom.getItem(objeto).getPeso();
+                currentRoom.removeItem(objeto);
+            }
+            else{
+                System.out.println("No puedes coger el objeto, demasiado peso!");
+            }
         }
         else{
-            System.out.println("No puedes coger el objeto, demasiado peso!");
+            System.out.println("No se puede coger ese objeto!!");
         }
     }
 }

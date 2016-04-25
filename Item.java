@@ -9,12 +9,14 @@ public class Item
 {
     private String descripcionObj;
     private float peso;
+    private boolean puedeCogerse;
     
     /**
      * Constructor for objects of class Item
      */
-    public Item(String descripcion, float peso)
+    public Item(String descripcion, float peso, boolean puedeCogerse)
     {
+        this.puedeCogerse = puedeCogerse;
         this.peso = peso;
         descripcionObj = descripcion;
     }
@@ -47,5 +49,13 @@ public class Item
     public String getLongDescription()
     {
         return descripcionObj + " (Peso:" + peso + " Kg)";
+    }
+    
+    /**
+     * Metodo que devuelve true si se puede coger un objeto o false si no se puede.
+     */
+    public boolean puedeRecogerse()
+    {
+        return puedeCogerse;
     }
 }
