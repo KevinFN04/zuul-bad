@@ -90,9 +90,9 @@ public class Player
         if (currentRoom.getNumberItem() == 0) {
             System.out.println("No hay objetos en la sala!!");
         }
-        inventario.add(currentRoom.getItem(objeto));
         if (currentRoom.getItem(objeto).puedeRecogerse()){
             if (pesoObj + currentRoom.getItem(objeto).getPeso() <= PESO_MAXIMO){
+                inventario.add(currentRoom.getItem(objeto));
                 pesoObj += currentRoom.getItem(objeto).getPeso();
                 currentRoom.removeItem(objeto);
             }
@@ -104,4 +104,6 @@ public class Player
             System.out.println("No se puede coger ese objeto!!");
         }
     }
+    
+    
 }
