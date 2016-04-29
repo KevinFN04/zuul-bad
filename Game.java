@@ -136,32 +136,42 @@ public class Game
         }
 
         Option commandWord = command.getCommandWord();
-        if (commandWord.equals(Option.help)) {
+        switch (commandWord){
+            case help:
             printHelp();
-        }
-        else if (commandWord.equals(Option.go)) {
+            break;
+
+            case go:
             goRoom(command);
-        }
-        else if (commandWord.equals(Option.quit)) {
+            break;
+            
+            case quit:
             wantToQuit = quit(command);
-        }
-        else if (commandWord.equals(Option.look)) {
+            break;
+            
+            case look:
             System.out.println(currentRoom.getLongDescription());
-        }
-        else if (commandWord.equals(Option.eat)) {
+            break;
+            
+            case eat:
             System.out.println("You have eaten now and you are not hungry any more");
-        }
-        else if (commandWord.equals(Option.back)) {
+            break;
+            
+            case back:
             goBack();
-        }
-        else if (commandWord.equals(Option.take)) {
+            break;
+            
+            case take:
             player.takeObject(command);
-        }
-        else if (commandWord.equals(Option.drop)) {
+            break;
+            
+            case drop:
             player.dropObject(command);
-        }
-        else if (commandWord.equals(Option.items)) {
+            break;
+            
+            case items:
             player.showObjects(command);
+            break;
         }
         return wantToQuit;
     }
@@ -191,7 +201,7 @@ public class Game
     {
         Room newRoom = player.goRoom(command);
         if (newRoom != null){
-         currentRoom = newRoom;   
+            currentRoom = newRoom;   
         }
     }
 
@@ -224,5 +234,5 @@ public class Game
     private void goBack(){
         player.goBack();
     }
-    
+
 }
