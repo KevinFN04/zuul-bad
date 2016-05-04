@@ -20,12 +20,11 @@ public class CommandWords
      */
     public CommandWords()
     {
+        validCommandsHM= new HashMap<>();
         Option[] opciones = Option.values();
-        validCommandsHM = new HashMap<>();
-        final String[] validCommands = {
-                "ir", "quitar", "ayuda", "mirar", "comer", "retroceder", "coger", "tirar", "inventario"};
-        for (int i = 0; i < validCommands.length; i++) {
-            validCommandsHM.put(validCommands[i], opciones[i]);
+        
+        for (Option opcion : opciones){
+             validCommandsHM.put(opcion.getCommand(),opcion);
         }
     }
 
