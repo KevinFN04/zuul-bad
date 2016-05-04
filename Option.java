@@ -17,5 +17,13 @@ public enum Option
     {
         this.command = command;
     }
+    
+    /**
+     * Devuelve un String con nombre del comando
+     */
+    public String getCommand()
+    {
+        return command;
+    }
 }
 
