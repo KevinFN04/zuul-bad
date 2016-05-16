@@ -109,4 +109,8 @@ public class Room
     public int getNumberItem(){
         return items.size();
     }
+    
+    public HashMap<String, Item> getRoomItems(){
+        return items;
+    }
 }

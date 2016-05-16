@@ -22,8 +22,10 @@ public class Game
     private Player player;
     private Room currentRoom;
     private ArrayList<Room> salas;
+    private ArrayList<Item> objetos;
     private Room salida;
     private Room trampa;
+    private Item objetoClave;
     //private Stack<Room> salas;
 
     /**
@@ -32,6 +34,7 @@ public class Game
     public Game() 
     {
         salas = new ArrayList<Room>();
+        objetos = new ArrayList<Item>();
         createRooms();
         parser = new Parser();
         player = new Player(currentRoom);
@@ -51,13 +54,13 @@ public class Game
         arbol = new Room("Enfrente de ti se puede observar un arbol de un tamaño bastante considerable.");
         pozo = new Room("En medio de esta nueva sala te encuentras con un gran pozo y no puedes evitar preguntarte si tendra algo de agua en el fondo.");
         mazmorra = new Room("Miras alrededor y te das cuenta de que has vuelto a las mazmorras donde empezaste... Lo que pensabas, un laberinto...");
-        
+
         //Items
         mazmorra.addItem("Manzana", 1, true);
         mazmorra.addItem("Llave", 1, true);
         mazmorra.addItem("Martillo", 9, true);
         mazmorra.addItem("Piedra", 9, false);
-        
+
         // initialise room exits (N,E,S,W,SE,NO)
         central.setExit("north", mazmorra);
         central.setExit("east", ruinas);
@@ -76,11 +79,11 @@ public class Game
         mazmorra.setExit("east", pozo);
         mazmorra.setExit("south", central);
         mazmorra.setExit("southEast", ruinas);
-        
+
         pedestal.setExit("east", central);
 
         currentRoom = mazmorra;  // start game outside
-        
+
         //Asignamos la salida y la trampa aleatoriamente.
         salas.add(central);
         salas.add(ruinas);
@@ -89,13 +92,23 @@ public class Game
         salas.add(pozo);
         salas.add(mazmorra);
         Random nAleat = new Random();
-        salida = currentRoom;
-        trampa = currentRoom;
+        salida = salas.get(nAleat.nextInt(salas.size()-1));
+        trampa = salas.get(nAleat.nextInt(salas.size()-1));
         while(salida == currentRoom){
             salida = salas.get(nAleat.nextInt(salas.size()-1));
         }
         while(salida == trampa || trampa == currentRoom){
             trampa = salas.get(nAleat.nextInt(salas.size()-1));
+        }
+
+        //Asigna el objeto para salir de la sala una vez.
+        for(Room newSala: salas){
+            setGlobalItems(newSala.getRoomItems());
+        }
+
+        objetoClave = objetos.get(nAleat.nextInt(objetos.size()-1));
+        while(!objetoClave.puedeRecogerse()){
+            objetoClave = objetos.get(nAleat.nextInt(objetos.size()-1));
         }
     }
 
@@ -113,16 +126,40 @@ public class Game
         boolean estaEnSalida = false;
         boolean estaEnTrampa = false;
         boolean finished = false;
+        boolean objClvUsado = false;
         while (!finished && !estaEnSalida && !estaEnTrampa) {
             Command command = parser.getCommand();
             finished = processCommand(command);
             if (currentRoom.getDescription().equals(victory)){
                 estaEnSalida = true;
-                System.out.println("Al pasar por la entrada de la sala ves una luz enfrente de ti. \n¡La salida!");
+                System.out.println("##############################################################");
+                System.out.println("Al pasar por la entrada de la sala ves una luz enfrente de ti.");
+                System.out.println("                      ¡La salida!");
+                System.out.println("##############################################################");
             }
             if (currentRoom.getDescription().equals(derrota)){
-                estaEnTrampa = true;
-                System.out.println("Al entrar a la sala oyes un ruido a tu espalda y te sorprendes al ver que\ncomo todas las salidas desaparecen tras un muro.\nEstas encerrado, 'GAME OVER'");
+                System.out.println("#########################################################################");
+                System.out.println("Al entrar a la sala oyes un ruido a tu espalda y te sorprendes al ver que");
+                System.out.println("            como todas las salidas desaparecen tras un muro.");
+                Item objCompr = new Item(null, 0, false);
+                int count = 0;
+                while (objCompr != objetoClave && count <= player.getInventory().size()){
+                    objCompr = player.getInventory().get(count);
+                    count++;
+                }
+                if (objCompr != objetoClave || objClvUsado){
+                    estaEnTrampa = true;
+                    System.out.println("                     Estas encerrado, 'GAME OVER'");
+                    System.out.println("#########################################################################\n");
+                }
+                else{
+                    System.out.println("Miras al suelo y ves un hueco donde puede entrar unos de los objetos que");
+                    System.out.println("                             llevas.");
+                    System.out.println("                       Tiene forma de " + objetoClave.getDescription() + ".");
+                    System.out.println("   Lo metes y el suelo se lo traga a la vez que las puertas se abren.");
+                    System.out.println("#########################################################################\n");
+                }
+                objClvUsado = true;
             }
         }
         System.out.println("Juego terminado, gracias por jugar :')");
@@ -262,4 +299,14 @@ public class Game
         player.goBack();
     }
 
+    /**
+     * Metodo para almacenar los objetos de una sala (En HashMap) en un arrayList global.
+     */
+    private void setGlobalItems(HashMap<String, Item> items){
+
+        for(Item objActual : items.values()){
+            objetos.add(objActual);
+        }
+
+    }
 }

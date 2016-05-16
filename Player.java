@@ -147,5 +147,12 @@ public class Player
         }
         System.out.println("Peso actual: " + pesoObj);
     }
+    
+    /**
+     * Metodo para mostrar los objetos y el peso actual.
+     */
+    public ArrayList<Item> getInventory(){
+       return inventario;
+    }
 }
 
