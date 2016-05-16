@@ -21,6 +21,9 @@ public class Game
     private Parser parser;
     private Player player;
     private Room currentRoom;
+    private ArrayList<Room> salas;
+    private Room salida;
+    private Room trampa;
     //private Stack<Room> salas;
 
     /**
@@ -28,6 +31,7 @@ public class Game
      */
     public Game() 
     {
+        salas = new ArrayList<Room>();
         createRooms();
         parser = new Parser();
         player = new Player(currentRoom);
@@ -38,31 +42,33 @@ public class Game
      */
     private void createRooms()
     {
-        Room central, ruinas, trampa, salida, pozo, mazmorra;
+        Room central, ruinas, pedestal, arbol, pozo, mazmorra;
 
         // create the rooms
         central = new Room("Llegas a una sala con salida en todas las direcciones, en ella ves cuatro imponentes \ncolumnas que hace años deberian haber sido blancas.");
         ruinas = new Room("Al entrar te sorprendes al verte rodeado de ruinas de antiguas construcciones.");
-        trampa = new Room("Al entrar a la sala oyes un ruido a tu espalda y te sorprendes al ver que por donde acabas de entrar ya no hay salida. Estas encerrado, 'GAME OVER'");
-        salida = new Room("Al pasar por la entrada de la sala ves una luz enfrente de ti. \n¡La salida!");
+        pedestal = new Room("En medio de esta sala se puede apreciar un pedestal.");
+        arbol = new Room("Enfrente de ti se puede observar un arbol de un tamaño bastante considerable.");
         pozo = new Room("En medio de esta nueva sala te encuentras con un gran pozo y no puedes evitar preguntarte si tendra algo de agua en el fondo.");
         mazmorra = new Room("Miras alrededor y te das cuenta de que has vuelto a las mazmorras donde empezaste... Lo que pensabas, un laberinto...");
+        
         //Items
         mazmorra.addItem("Manzana", 1, true);
         mazmorra.addItem("Llave", 1, true);
         mazmorra.addItem("Martillo", 9, true);
         mazmorra.addItem("Piedra", 9, false);
+        
         // initialise room exits (N,E,S,W,SE,NO)
         central.setExit("north", mazmorra);
         central.setExit("east", ruinas);
-        central.setExit("south", salida);
-        central.setExit("west", trampa);
+        central.setExit("south", arbol);
+        central.setExit("west", pedestal);
 
         ruinas.setExit("north", pozo);
         ruinas.setExit("west", central);
         ruinas.setExit("northWest", mazmorra);
 
-        salida.setExit("north", central);
+        arbol.setExit("north", central);
 
         pozo.setExit("south", ruinas);
         pozo.setExit("west", mazmorra);
@@ -70,8 +76,27 @@ public class Game
         mazmorra.setExit("east", pozo);
         mazmorra.setExit("south", central);
         mazmorra.setExit("southEast", ruinas);
+        
+        pedestal.setExit("east", central);
 
         currentRoom = mazmorra;  // start game outside
+        
+        //Asignamos la salida y la trampa aleatoriamente.
+        salas.add(central);
+        salas.add(ruinas);
+        salas.add(pedestal);
+        salas.add(arbol);
+        salas.add(pozo);
+        salas.add(mazmorra);
+        Random nAleat = new Random();
+        salida = currentRoom;
+        trampa = currentRoom;
+        while(salida == currentRoom){
+            salida = salas.get(nAleat.nextInt(salas.size()-1));
+        }
+        while(salida == trampa || trampa == currentRoom){
+            trampa = salas.get(nAleat.nextInt(salas.size()-1));
+        }
     }
 
     /**
@@ -83,19 +108,21 @@ public class Game
 
         // Enter the main command loop.  Here we repeatedly read commands and
         // execute them until the game is over.
-        String victory = "Al pasar por la entrada de la sala ves una luz enfrente de ti. \n¡La salida!";
-        String derrota = "Al entrar a la sala oyes un ruido a tu espalda y te sorprendes al ver que por donde acabas de entrar ya no hay salida. Estas encerrado, 'GAME OVER'";
-        boolean salida = false;
-        boolean trampa = false;
+        String victory = salida.getDescription();
+        String derrota = trampa.getDescription();
+        boolean estaEnSalida = false;
+        boolean estaEnTrampa = false;
         boolean finished = false;
-        while (!finished && !salida && !trampa) {
+        while (!finished && !estaEnSalida && !estaEnTrampa) {
             Command command = parser.getCommand();
             finished = processCommand(command);
             if (currentRoom.getDescription().equals(victory)){
-                salida = true;
+                estaEnSalida = true;
+                System.out.println("Al pasar por la entrada de la sala ves una luz enfrente de ti. \n¡La salida!");
             }
             if (currentRoom.getDescription().equals(derrota)){
-                trampa = true;
+                estaEnTrampa = true;
+                System.out.println("Al entrar a la sala oyes un ruido a tu espalda y te sorprendes al ver que\ncomo todas las salidas desaparecen tras un muro.\nEstas encerrado, 'GAME OVER'");
             }
         }
         System.out.println("Juego terminado, gracias por jugar :')");
@@ -144,31 +171,31 @@ public class Game
             case go:
             goRoom(command);
             break;
-            
+
             case quit:
             wantToQuit = quit(command);
             break;
-            
+
             case look:
             System.out.println(currentRoom.getLongDescription());
             break;
-            
+
             case eat:
             System.out.println("You have eaten now and you are not hungry any more");
             break;
-            
+
             case back:
             goBack();
             break;
-            
+
             case take:
             player.takeObject(command);
             break;
-            
+
             case drop:
             player.dropObject(command);
             break;
-            
+
             case items:
             player.showObjects(command);
             break;

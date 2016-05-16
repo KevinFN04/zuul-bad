@@ -1,0 +1,6 @@
+
+1- Dos salas especiales, una donde si entras no puedas volver a salir y el juego termine porque has perdido y otra donde sea la salida
+del laberinto y termines el juego victorioso. Estas salas seran elegidas aleatoriamente entre todas las salas excepto la inicial.
+
+2- Si llevas un objeto, que se decidira aleatoriamente, puedes salir una unica vez de la sala trampa y obtener asi un segundo intento.
+El jugador sera informado de que item es si lo lleva en el inventario cuando entre en la sala trampa.
